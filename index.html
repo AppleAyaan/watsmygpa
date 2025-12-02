@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>coming soon</title>
+  <style>
+    :root{
+      --bg:#000000;
+      --yellow-1:#ffd700;
+      --yellow-2:#ffe66d;
+      --glass-alpha: 0.06;
+      --font-sans: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* reset-ish */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+
+    body{
+      background:var(--bg);
+      color:#fff;
+      font-family:var(--font-sans);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:grid;
+      place-items:center;
+      padding:32px;
+    }
+
+    .wrap{
+      text-align:center;
+      max-width:1000px;
+      width:100%;
+    }
+
+    /* big gradient text */
+    .headline{
+      font-size:clamp(48px, 12vw, 160px);
+      line-height:0.9;
+      font-weight:800;
+      letter-spacing: -0.02em;
+      /* yellow linear gradient applied to text */
+      background: linear-gradient(90deg, var(--yellow-1) 0%, var(--yellow-2) 50%, var(--yellow-1) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position:relative;
+      display:inline-block;
+      padding: 8px 12px;
+      text-transform: lowercase;
+    }
+
+    /* subtle animated shimmer over text to make the gradient feel alive */
+    .headline::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      left:-100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.05) 100%);
+      transform: skewX(-18deg);
+      animation: shimmer 3.8s linear infinite;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes shimmer{
+      to { left: 200%; }
+    }
+
+    /* yellow glow under the letters for extra pop */
+    .headline-shadow{
+      filter: drop-shadow(0 10px 22px rgba(255,215,0,0.06))
+              drop-shadow(0 6px 14px rgba(255,223,50,0.06));
+    }
+
+    /* small subtitle and CTA area */
+    .subtitle{
+      margin-top:18px;
+      color: #ddd;
+      font-size:clamp(14px, 2.4vw, 18px);
+      opacity:0.95;
+    }
+
+    .card{
+      margin-top:28px;
+      display:inline-flex;
+      gap:12px;
+      align-items:center;
+      padding:10px 14px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,215,0,0.04), rgba(255,215,0,0.02));
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+    }
+
+    .notify-btn{
+      font-weight:600;
+      font-size:14px;
+      color:#000;
+      background: linear-gradient(90deg, #fff 0%, #fff 100%);
+      border-radius:8px;
+      padding:10px 14px;
+      border:none;
+      cursor:pointer;
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+
+    .notify-btn:active{ transform: translateY(1px) }
+    .meta{ color:#bbb; font-size:13px }
+
+    /* footer / fine print */
+    .foot{
+      margin-top:34px;
+      color:#777;
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      .card{flex-direction:column; gap:8px; padding:12px}
+      .notify-btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 class="headline headline-shadow">coming soon</h1>
+
+    <div class="subtitle">we're cookin' something dope — drop your email and we'll hit you up</div>
+
+    <div class="card" role="region" aria-label="notify me area">
+      <input aria-label="email" type="email" placeholder="your email" style="background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:#fff;outline:none;font-size:14px" />
+      <button class="notify-btn" onclick="fakeToast()">notify me</button>
+    </div>
+
+    <div class="foot">designed with love • yellow on black • minimal</div>
+  </div>
+
+  <script>
+    // tiny playful feedback so the page feels finished.
+    function fakeToast(){
+      const btn = document.querySelector('.notify-btn');
+      btn.textContent = 'got it — thanks!';
+      btn.disabled = true;
+      setTimeout(()=>{ btn.textContent = 'notify me'; btn.disabled = false }, 2200);
+    }
+  </script>
+</body>
+</html>
