@@ -1,3 +1,3 @@
-# watsmygpa
+# Watsmygpa
 
-In Progress...
+[now live](https://www.watsmygpa.me)!
