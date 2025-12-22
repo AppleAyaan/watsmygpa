@@ -8,17 +8,22 @@ import { calculateGPA } from "@/lib/gpa-calculator"
 import { saveGPAData } from "@/lib/local-storage"
 import { processTranscript } from "@/lib/actions/process-transcript"
 import { useTheme } from "next-themes"
-import * as pdfjsLib from "pdfjs-dist"
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@5.4.394/build/pdf.worker.min.mjs`
 
 export default function UploadPage() {
   const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
   const [showTooltip, setShowTooltip] = useState(true)
 
+  // Lazy load pdfjs inside the component to prevent SSR errors
+  const loadPdfjs = async () => {
+    const pdfjsLib = await import("pdfjs-dist")
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@5.4.394/build/pdf.worker.min.mjs`
+    return pdfjsLib
+  }
+
   const extractTextFromPDF = async (file: File): Promise<string> => {
-    let pdf: pdfjsLib.PDFDocumentProxy | null = null
+    const pdfjsLib = await loadPdfjs()
+    let pdf: any = null
 
     try {
       const arrayBuffer = await file.arrayBuffer()
@@ -38,51 +43,35 @@ export default function UploadPage() {
             const text = item.str.trim()
 
             if (text) {
-              if (!lineMap.has(y)) {
-                lineMap.set(y, [])
-              }
+              if (!lineMap.has(y)) lineMap.set(y, [])
               lineMap.get(y)!.push(text)
             }
           }
         })
 
-        // Sort by Y position (top to bottom) and join text on same line
         const sortedLines = Array.from(lineMap.entries())
-          .sort((a, b) => b[0] - a[0]) // Higher Y = top of page
+          .sort((a, b) => b[0] - a[0])
           .map(([_, texts]) => texts.join(" "))
 
         allLines.push(...sortedLines)
       }
 
-      const fullText = allLines.join("\n")
-
-      return fullText
-    } catch (error) {
-      throw new Error("Failed to extract text from PDF. Please ensure the PDF is not corrupted.")
+      return allLines.join("\n")
     } finally {
       if (pdf) {
-        try {
-          await pdf.cleanup()
-          await pdf.destroy()
-        } catch (cleanupError) {
-          // Silent cleanup error handling
-        }
+        try { await pdf.cleanup(); await pdf.destroy() } catch {}
       }
     }
   }
 
   const handleFileUpload = async (file: File) => {
     setIsProcessing(true)
-
     try {
-      let transcriptText = ""
-
-      if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")) {
-        transcriptText = await extractTextFromPDF(file)
-      } else {
+      if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
         throw new Error("Please upload a PDF file")
       }
 
+      const transcriptText = await extractTextFromPDF(file)
       const result = await processTranscript(transcriptText)
 
       if (!result.success || !result.courses) {
@@ -90,18 +79,12 @@ export default function UploadPage() {
       }
 
       const courses = result.courses
-
       const gpaData = calculateGPA(courses)
 
-      saveGPAData({
-        gpa: gpaData.overallGPA,
-        courses: courses,
-        timestamp: Date.now(),
-      })
-
+      saveGPAData({ gpa: gpaData.overallGPA, courses, timestamp: Date.now() })
       router.push("/results")
     } catch (error) {
-      alert(`Error: ${error instanceof Error ? error.message : "Failed to process transcript. Please try again."}`)
+      alert(`Error: ${error instanceof Error ? error.message : "Failed to process transcript."}`)
     } finally {
       setIsProcessing(false)
     }
@@ -116,21 +99,12 @@ export default function UploadPage() {
         onClick={() => router.push("/")}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") router.push("/")
-        }}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") router.push("/") }}
       >
-        <img
-          src="/watsmygpa_logo_long_light.png"
-          className="block dark:hidden w-auto h-10 sm:h-12 md:h-14 lg:h-16"
-          alt="WATsMyGPA logo"
-        />
-        <img
-          src="/watsmygpa_logo_long_dark.png"
-          className="hidden dark:block w-auto h-10 sm:h-12 md:h-14 lg:h-16"
-          alt="WATsMyGPA logo"
-        />
+        <img src="/watsmygpa_logo_long_light.png" className="block dark:hidden w-auto h-10 sm:h-12 md:h-14 lg:h-16" alt="WATsMyGPA logo" />
+        <img src="/watsmygpa_logo_long_dark.png" className="hidden dark:block w-auto h-10 sm:h-12 md:h-14 lg:h-16" alt="WATsMyGPA logo" />
       </div>
+
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted -z-10" />
       <div className="absolute top-20 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/3 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -141,8 +115,7 @@ export default function UploadPage() {
             Calculate Your <span className="text-primary">GPA</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground text-balance max-w-xl mx-auto">
-            Upload your <b className="text-yellow-300 drop-shadow-[0_0_15px_rgb(253,224,71)]">unofficial transcript</b>{" "}
-            and instantly see your GPA, course breakdown, and peer comparison
+            Upload your <b className="text-yellow-300 drop-shadow-[0_0_15px_rgb(253,224,71)]">unofficial transcript</b> and instantly see your GPA, course breakdown, and peer comparison
           </p>
         </div>
 
@@ -153,12 +126,7 @@ export default function UploadPage() {
         <div className="text-center text-sm text-muted-foreground animate-in fade-in duration-700 delay-300">
           <div className="flex items-center justify-center gap-2">
             <svg className="w-4 h-4" fill="none" stroke="green" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
             <span className="bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">
               We never store or retain your transcript.
