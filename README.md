@@ -31,7 +31,9 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AppleAyaan/watsmygpa/a139713c33e36d501145d281d2428e351ee133f1/public/watsmygpa_readme.gif" alt="WATsMyGPA GIF">
+</p>
 
 ## Key Features
 
