@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     ],
     apple: "/watsmygpa_logo_small_dark.png",
   },
-    generator: 'v0.app'
+    generator: 'WATsMYGPA v0.8.9'
 }
 
 export default function RootLayout({
