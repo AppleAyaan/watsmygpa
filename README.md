@@ -51,7 +51,7 @@
 
 ## How To Use
 
-1. Visit watsmygpa.me
+1. Visit [watsmygpa.me](http://www.watsmygpa.me)
 2. Click **Calculate GPA**
 3. Go to **Quest** and click on **Academics**
 4. Click on **Unofficial Transcript** and download the PDF
