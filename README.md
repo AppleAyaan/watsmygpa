@@ -74,6 +74,6 @@ This project **may not** be copied, distributed, or modified without permission.
 
 ---
 
-> GitHub [@appleayaan](https://github.com/appleayaan)
-> Twitter [@ayaanyyz](https://twitter.com/ayaanyyz)
+> GitHub [@appleayaan](https://github.com/appleayaan)   
+> Twitter [@ayaanyyz](https://twitter.com/ayaanyyz)   
 > LinkedIn [@Ayaan Faisal](https://linkedin.com/in/ayaanfaisal18)
