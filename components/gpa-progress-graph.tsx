@@ -206,7 +206,7 @@ export function GPAProgressGraph({ termGPAs, program, displayMode }: GPAProgress
         <p className="text-sm text-muted-foreground">Your academic performance over time</p>
       </div>
 
-      <div ref={chartRef} className="w-full h-[300px] md:h-[400px]">
+      <div className="w-full h-[300px] md:h-[400px] text-foreground dark:text-foreground" ref={chartRef}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={animatedData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
             <defs>
@@ -222,22 +222,24 @@ export function GPAProgressGraph({ termGPAs, program, displayMode }: GPAProgress
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
             <XAxis
               dataKey="term"
-              stroke="hsl(var(--muted-foreground))"
+              stroke="currentColor"
               fontSize={12}
               tickLine={false}
               axisLine={false}
               angle={-45}
               textAnchor="end"
               height={80}
+              tick={{ fill: 'currentColor' }}
             />
             <YAxis
-              stroke="hsl(var(--muted-foreground))"
+              stroke="currentColor"
               fontSize={12}
               tickLine={false}
               axisLine={false}
               domain={yAxisDomain}
               ticks={yAxisTicks}
               tickFormatter={(value) => (displayMode === "gpa" ? value.toFixed(1) : `${value}%`)}
+              tick={{ fill: 'currentColor' }}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend verticalAlign="top" height={36} iconType="line" wrapperStyle={{ paddingBottom: "10px" }} />
