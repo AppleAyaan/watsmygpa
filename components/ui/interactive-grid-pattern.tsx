@@ -76,8 +76,10 @@ export function InteractiveGridPattern({
       }
     }
 
-    document.addEventListener("mousemove", handleMouseMove)
-    return () => document.removeEventListener("mousemove", handleMouseMove)
+    if (typeof window !== "undefined") {
+      document.addEventListener("mousemove", handleMouseMove)
+      return () => document.removeEventListener("mousemove", handleMouseMove)
+    }
   }, [width, height, horizontal, vertical])
 
   const gridLineColor = mounted && theme === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)"
