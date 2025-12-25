@@ -69,7 +69,7 @@ If you like this project and think it has helped in any way, consider buying me 
 
 
 
-## 📄 License
+## License
 
 © 2025 Ayaan Faisal. All rights reserved.  
 This project **may not** be copied, distributed, or modified without permission.
