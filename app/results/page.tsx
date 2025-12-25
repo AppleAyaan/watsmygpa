@@ -72,7 +72,7 @@ export default function ResultsPage() {
       setProgram(data.program)
       setShowComparison(true)
     }
-  }, [router])
+  }, [])  // run only once on page load
 
   useEffect(() => {
     if (gpaData?.courses && gpaData.courses.length > 0) {
@@ -90,7 +90,7 @@ export default function ResultsPage() {
 
       if (!isProgramMatch) {
         const confirmMismatch = confirm(
-          `The program you selected (${program}) doesn't match your transcript program (${transcriptProgram}). Continue anyway?`,
+          `The program you selected ${program} doesn't match your transcript program ${transcriptProgram}. Continue anyway?`,
         )
         if (!confirmMismatch) return
       }
@@ -156,6 +156,9 @@ export default function ResultsPage() {
 
   const displayedValue =
     displayMode === "gpa" ? currentGPA?.overallGPA.toFixed(2) : gpaToPercentage(currentGPA?.overallGPA).toFixed(0) + "%"
+
+  // Dynamic predicted GPA calculation based on current overall GPA + 0.1 capped at 4.0
+  const predictedGPAValue = currentGPA?.overallGPA ? Math.min(currentGPA.overallGPA + 0.1, 4.0) : 0
 
   if (!gpaData || !currentGPA || !currentGPA.courses) {
     return (
@@ -253,6 +256,15 @@ export default function ResultsPage() {
             <p className="text-muted-foreground text-sm md:text-base">
               Based on {currentGPA.courses?.length || 0} courses
             </p>
+            <div className="mt-2 flex flex-col items-center gap-1">
+              <span
+                className={`text-sm md:text-base font-semibold ${
+                  predictedGPAValue > currentGPA.overallGPA ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                Predicted GPA next term: {predictedGPAValue.toFixed(2)}
+              </span>
+            </div>
           </div>
         </div>
 
