@@ -98,7 +98,7 @@ const TermsPage: React.FC = () => {
           These Terms of Service may be updated periodically. Users are encouraged to review this page regularly to stay
           informed about the current terms.
         </p>
-        <p style={{ marginTop: "1rem", textAlign: "center", fontStyle: "italic" }}>Last Updated: December 1st, 2025</p>
+        <p style={{ marginTop: "1rem", textAlign: "center", fontStyle: "italic" }}>Last Updated: April 24th, 2026</p>
         <br></br>
         <p style={{ textAlign: "center", fontWeight: "bold" }}>
           Thank you for using WATsMyGpa. By continuing, you agree to abide by these terms.

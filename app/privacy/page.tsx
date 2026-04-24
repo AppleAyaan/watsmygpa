@@ -100,7 +100,7 @@ const PrivacyPage: React.FC = () => {
           review this page regularly to stay informed.
         </p>
 
-        <p style={{ marginTop: "1rem", textAlign: "center", fontStyle: "italic" }}>Last Updated: December 1st, 2025</p>
+        <p style={{ marginTop: "1rem", textAlign: "center", fontStyle: "italic" }}>Last Updated: April 24th, 2026</p>
         <br></br>
         <p style={{ textAlign: "center", fontWeight: "bold" }}>
           Thank you for using WATsMyGpa. Your privacy is our priority.

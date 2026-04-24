@@ -71,7 +71,7 @@ If you like this project and think it has helped in any way, consider buying me 
 
 ## License
 
-© 2025 Ayaan Faisal. All rights reserved.  
+© 2026 Ayaan Faisal. All rights reserved.  
 This project **may not** be copied, distributed, or modified without permission.
 
 ---
