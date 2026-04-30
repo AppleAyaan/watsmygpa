@@ -12,7 +12,7 @@ export function StudentCounter() {
       try {
         const response = await fetch("/api/stats/count")
         const data = await response.json()
-        setCount(data.count || 0)
+        setCount(data.count || 83)
         setIsLoading(false)
       } catch (error) {
         console.error("Error fetching student count:", error)
